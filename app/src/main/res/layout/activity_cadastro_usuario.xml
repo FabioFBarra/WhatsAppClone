@@ -45,17 +45,18 @@
         android:id="@+id/editSenha"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/editEmail"
         android:layout_marginTop="26dp"
         android:ems="10"
+        android:fontFamily="sans-serif"
         android:hint="@string/senha"
         android:inputType="textPassword"
         app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        tools:layout_editor_absoluteY="289dp"
-        android:layout_below="@+id/editEmail"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        tools:layout_editor_absoluteY="289dp" />
 
     <Button
         android:id="@+id/buttonCadastrar"
@@ -66,5 +67,5 @@
         android:layout_below="@+id/editSenha"
         android:layout_marginTop="28dp"
         android:text="@string/botao_cdastrar"
-        android:theme="@style/botaoPadrao" />/>
+        android:theme="@style/botaoPadrao" />
 </RelativeLayout>
