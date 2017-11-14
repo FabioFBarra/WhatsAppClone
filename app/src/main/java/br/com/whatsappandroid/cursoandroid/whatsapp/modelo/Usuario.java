@@ -22,6 +22,8 @@ public class Usuario {
     public void salvar(){
         DatabaseReference databaseReference = ConfiguracaoFirebase.getFirebase();
         databaseReference.child("usuarios").child(getId()).setValue(this); //o this seta os valores do objeto, ou seja, o nome, email e id!
+
+        //teste
     }
 
     @Exclude
