@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         usuarioAutenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar_principal);
-        toolbar.setTitle("Whatsapp");
+        toolbar.setTitle(usuarioAutenticacao.getCurrentUser().getEmail());
         setSupportActionBar(toolbar);
 
         slidingTabLayout = (SlidingTabLayout) findViewById(R.id.stl_tabs);

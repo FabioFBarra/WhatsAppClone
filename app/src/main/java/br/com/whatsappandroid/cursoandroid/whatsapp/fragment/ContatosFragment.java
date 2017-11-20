@@ -3,6 +3,7 @@ package br.com.whatsappandroid.cursoandroid.whatsapp.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 
 import br.com.whatsappandroid.cursoandroid.whatsapp.R;
 import br.com.whatsappandroid.cursoandroid.whatsapp.activity.MainActivity;
+import br.com.whatsappandroid.cursoandroid.whatsapp.adapter.ContatoAdapter;
 import br.com.whatsappandroid.cursoandroid.whatsapp.config.ConfiguracaoFirebase;
 import br.com.whatsappandroid.cursoandroid.whatsapp.helper.Preferencias;
 import br.com.whatsappandroid.cursoandroid.whatsapp.modelo.Contato;
@@ -29,8 +31,9 @@ public class ContatosFragment extends Fragment {
 
     private ListView listView;
     private ArrayAdapter arrayAdapter;
-    private ArrayList<String> contatos;
+    private ArrayList<Contato> contatos;
     private DatabaseReference databaseReference;
+    private ValueEventListener valueEventListener;
 
     public ContatosFragment() {
         // Required empty public constructor
@@ -52,7 +55,12 @@ public class ContatosFragment extends Fragment {
         //Montando listview
         listView = (ListView) view.findViewById(R.id.lv_contatos);
 
-        arrayAdapter = new ArrayAdapter(getActivity(), R.layout.lista_contato, contatos);
+        //Adaptador Original
+       // arrayAdapter = new ArrayAdapter(getActivity(), R.layout.lista_contato, contatos);
+        //Adaptador Customizado
+
+        arrayAdapter = new ContatoAdapter(getActivity(), contatos);
+
 
         listView.setAdapter(arrayAdapter);
 
@@ -64,7 +72,7 @@ public class ContatosFragment extends Fragment {
 
         //listener para recuperar contatos
 
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
@@ -74,7 +82,7 @@ public class ContatosFragment extends Fragment {
                 //listar contatos
                 for(DataSnapshot dados: dataSnapshot.getChildren()){
                     Contato contato = dados.getValue(Contato.class);
-                    contatos.add(contato.getNome());
+                    contatos.add(contato);
                 }
 
                 arrayAdapter.notifyDataSetChanged();
@@ -84,9 +92,24 @@ public class ContatosFragment extends Fragment {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        };
+
+
 
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        databaseReference.addValueEventListener(valueEventListener);
+        Log.i("ValueEventListener", "onStart");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        databaseReference.removeEventListener(valueEventListener);
+        Log.i("ValueEventListener", "onStop");
+    }
 }
