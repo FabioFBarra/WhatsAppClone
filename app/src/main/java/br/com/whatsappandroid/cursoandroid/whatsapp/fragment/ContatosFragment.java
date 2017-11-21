@@ -1,12 +1,14 @@
 package br.com.whatsappandroid.cursoandroid.whatsapp.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -18,6 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import br.com.whatsappandroid.cursoandroid.whatsapp.R;
+import br.com.whatsappandroid.cursoandroid.whatsapp.activity.ConversaActivity;
 import br.com.whatsappandroid.cursoandroid.whatsapp.activity.MainActivity;
 import br.com.whatsappandroid.cursoandroid.whatsapp.adapter.ContatoAdapter;
 import br.com.whatsappandroid.cursoandroid.whatsapp.config.ConfiguracaoFirebase;
@@ -94,7 +97,13 @@ public class ContatosFragment extends Fragment {
             }
         };
 
-
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getActivity(), ConversaActivity.class);
+                startActivity(intent);
+            }
+        });
 
         return view;
     }
