@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseUser;
 import br.com.whatsappandroid.cursoandroid.whatsapp.R;
 import br.com.whatsappandroid.cursoandroid.whatsapp.config.ConfiguracaoFirebase;
 import br.com.whatsappandroid.cursoandroid.whatsapp.helper.Base64Custom;
+import br.com.whatsappandroid.cursoandroid.whatsapp.helper.Preferencias;
 import br.com.whatsappandroid.cursoandroid.whatsapp.modelo.Usuario;
 
 public class CadastroUsuarioActivity extends AppCompatActivity {
@@ -75,6 +76,11 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
 
                         usuario.setId(userID);
                         usuario.salvar();
+
+                        Preferencias preferencias = new Preferencias(CadastroUsuarioActivity.this);
+                        preferencias.salvarUsuarioPreferencias(identificadorUsuario);
+
+
                         abrirUsuarioLogado();
                     } else {
 
