@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/WhatsApp.iml" filepath="$PROJECT_DIR$/WhatsApp.iml" />
+      <module fileurl="file://C:\Users\fabio\StudioProjects\WhatsAppClone-Didatic\WhatsApp.iml" filepath="C:\Users\fabio\StudioProjects\WhatsAppClone-Didatic\WhatsApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WhatsAppClone-Didatic.iml" filepath="$PROJECT_DIR$/WhatsAppClone-Didatic.iml" />
       <module fileurl="file://C:\Users\204054947\Desktop\Fabio\WhatsApp\WhatsAppClone-Didatic.iml" filepath="C:\Users\204054947\Desktop\Fabio\WhatsApp\WhatsAppClone-Didatic.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

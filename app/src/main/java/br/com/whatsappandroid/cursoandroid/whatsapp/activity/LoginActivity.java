@@ -20,7 +20,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Random;
 
@@ -38,7 +41,11 @@ public class LoginActivity extends AppCompatActivity {
     private TextView email;
     private Button botaologar;
     private Usuario usuario;
+    private String identificadorUsuarioLogado;
     private FirebaseAuth autenticacao;
+
+    private DatabaseReference firebase;
+    private ValueEventListener valueEventListenerUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,9 +90,32 @@ public class LoginActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
 
-                        Preferencias preferencias = new Preferencias(LoginActivity.this);
-                        String identificadorUsuario = Base64Custom.codificarBase64(usuario.getEmail());
-                        preferencias.salvarUsuarioPreferencias(identificadorUsuario);
+
+                        identificadorUsuarioLogado = Base64Custom.codificarBase64(usuario.getEmail());
+
+
+                        firebase = ConfiguracaoFirebase.getFirebase().child("usuarios").child(identificadorUsuarioLogado);
+
+                        valueEventListenerUsuario = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                Usuario usuarioRecuperado = dataSnapshot.getValue(Usuario.class);
+
+                                Preferencias preferencias = new Preferencias(LoginActivity.this);
+
+                                preferencias.salvarUsuarioPreferencias(identificadorUsuarioLogado, usuarioRecuperado.getNome());
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        };
+
+                        firebase.addListenerForSingleValueEvent(valueEventListenerUsuario);
+
+
 
 
                         abrirTelaPrincipal();

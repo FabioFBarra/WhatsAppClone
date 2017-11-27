@@ -56,7 +56,7 @@ public class ContatosFragment extends Fragment {
 
 
         //Montando listview
-        listView = (ListView) view.findViewById(R.id.lv_contatos);
+        listView = view.findViewById(R.id.lv_contatos);
 
         //Adaptador Original
        // arrayAdapter = new ArrayAdapter(getActivity(), R.layout.lista_contato, contatos);
