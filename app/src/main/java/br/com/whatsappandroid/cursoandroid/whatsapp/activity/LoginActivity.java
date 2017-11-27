@@ -90,39 +90,39 @@ public class LoginActivity extends AppCompatActivity {
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
 
-
+                        Preferencias preferencias = new Preferencias(LoginActivity.this);
                         identificadorUsuarioLogado = Base64Custom.codificarBase64(usuario.getEmail());
+
 
 
                         firebase = ConfiguracaoFirebase.getFirebase().child("usuarios").child(identificadorUsuarioLogado);
 
-                        valueEventListenerUsuario = new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
+                        preferencias.salvarUsuarioPreferencias(identificadorUsuarioLogado, usuario.getNome());
 
-                                Usuario usuarioRecuperado = dataSnapshot.getValue(Usuario.class);
-
-                                Preferencias preferencias = new Preferencias(LoginActivity.this);
-
-                                preferencias.salvarUsuarioPreferencias(identificadorUsuarioLogado, usuarioRecuperado.getNome());
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-
-                            }
-                        };
-
-                        firebase.addListenerForSingleValueEvent(valueEventListenerUsuario);
-
-
-
+//                        valueEventListenerUsuario = new ValueEventListener() {
+//                            @Override
+//                            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                                Usuario usuarioRecuperado = dataSnapshot.getValue(Usuario.class);
+//
+//                                Preferencias preferencias = new Preferencias(LoginActivity.this);
+//
+//                                preferencias.salvarUsuarioPreferencias(identificadorUsuarioLogado, usuarioRecuperado.getNome());
+//                            }
+//
+//                            @Override
+//                            public void onCancelled(DatabaseError databaseError) {
+//
+//                            }
+//                        };
 
                         abrirTelaPrincipal();
                         Toast.makeText(LoginActivity.this, "Login efetuado", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(LoginActivity.this, "Falha no login", Toast.LENGTH_LONG).show();
                     }
+
+
                 }
             });
         }
@@ -132,6 +132,7 @@ public class LoginActivity extends AppCompatActivity {
     public void abrirTelaPrincipal(){
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
     public void abrirCadastroUsuario(){
@@ -142,6 +143,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, CadastroUsuarioActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }

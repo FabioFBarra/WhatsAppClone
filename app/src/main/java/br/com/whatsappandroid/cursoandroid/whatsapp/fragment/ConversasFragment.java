@@ -55,7 +55,7 @@ public class ConversasFragment extends Fragment {
 
         listView.setAdapter(conversaArrayAdapter);
 
-        Preferencias preferencias = new Preferencias(getActivity());
+        Preferencias preferencias = new Preferencias(getContext());
         String idUsuarioLogado = preferencias.getIdentificador();
 
         firebase = ConfiguracaoFirebase.getFirebase().child("conversas").child(idUsuarioLogado);

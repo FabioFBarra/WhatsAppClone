@@ -146,23 +146,25 @@ public class ConversaActivity extends AppCompatActivity {
 
                     editMensagem.setText("");
                 }
+
+                //Salvar conversa
+
                 Conversa conversa = new Conversa();
                 conversa.setIdUsuario(idUsuarioDestinatario);
                 conversa.setNome(nomeUsuarioDestinatario);
                 conversa.setMensagem(textoMensagem);
+
                 Boolean retornoConversaRemetente = salvarConversa(idUsuarioRemetent, idUsuarioDestinatario, conversa);
                 if(!retornoConversaRemetente){
-                    Toast.makeText(getApplicationContext(), "Problema ao salvar sua conversa", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ConversaActivity.this, "Problema ao salvar sua conversa", Toast.LENGTH_LONG).show();
                 } else {
                     conversa = new Conversa();
                     conversa.setIdUsuario(idUsuarioRemetent);
                     conversa.setNome(nomeUsuarioRemetente);
                     conversa.setMensagem(textoMensagem);
-                    Boolean retornoConversaDestinatario = salvarConversa(idUsuarioDestinatario, idUsuarioRemetent, conversa);
-                    if(!retornoConversaDestinatario){
-                        Toast.makeText(getApplicationContext(), "Problema ao salvar conversa do Destinatario", Toast.LENGTH_LONG).show();
 
-                    }
+                    Boolean retornoConversaDestinatario = salvarConversa(idUsuarioDestinatario, idUsuarioRemetent, conversa);
+
                 }
             }
         });
@@ -188,7 +190,7 @@ public class ConversaActivity extends AppCompatActivity {
     private boolean salvarConversa(String idRemetente, String idDestinatario, Conversa conversa){
         try{
             databaseReference = ConfiguracaoFirebase.getFirebase().child("conversas");
-            databaseReference.child(idUsuarioRemetent).child(idUsuarioDestinatario).setValue(conversa);
+            databaseReference.child(idRemetente).child(idDestinatario).setValue(conversa);
             return true;
 
         }catch (Exception e){

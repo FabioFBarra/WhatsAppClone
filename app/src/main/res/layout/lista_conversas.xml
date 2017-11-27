@@ -22,14 +22,13 @@
         android:id="@+id/tv-subtitulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="email"
-        android:textColor="@android:color/black"
-        android:textSize="14sp"
         android:padding="8dp"
-        android:paddingRight="8dp"
         android:paddingBottom="8dp"
+        android:paddingRight="8dp"
         android:paddingTop="0dp"
-        />
+        android:text="email"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp" />
 
 </LinearLayout>
 
