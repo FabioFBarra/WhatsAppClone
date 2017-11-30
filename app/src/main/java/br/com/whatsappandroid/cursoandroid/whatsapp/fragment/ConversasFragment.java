@@ -1,11 +1,13 @@
 package br.com.whatsappandroid.cursoandroid.whatsapp.fragment;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -17,8 +19,10 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import br.com.whatsappandroid.cursoandroid.whatsapp.R;
+import br.com.whatsappandroid.cursoandroid.whatsapp.activity.ConversaActivity;
 import br.com.whatsappandroid.cursoandroid.whatsapp.adapter.ConversaAdapter;
 import br.com.whatsappandroid.cursoandroid.whatsapp.config.ConfiguracaoFirebase;
+import br.com.whatsappandroid.cursoandroid.whatsapp.helper.Base64Custom;
 import br.com.whatsappandroid.cursoandroid.whatsapp.helper.Preferencias;
 import br.com.whatsappandroid.cursoandroid.whatsapp.modelo.Conversa;
 
@@ -41,7 +45,7 @@ public class ConversasFragment extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
 
         conversaArrayList = new ArrayList<>();
@@ -78,6 +82,21 @@ public class ConversasFragment extends Fragment {
 
             }
         };
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                Conversa conversa = conversaArrayList.get(i);
+                String email = Base64Custom.decodificarBase64(conversa.getIdUsuario());
+                Intent intent = new Intent(getActivity(), ConversaActivity.class);
+
+                intent.putExtra("nome", conversa.getNome());
+                intent.putExtra("email", email);
+
+                startActivity(intent);
+            }
+        });
 
 
         // Inflate the layout for this fragment

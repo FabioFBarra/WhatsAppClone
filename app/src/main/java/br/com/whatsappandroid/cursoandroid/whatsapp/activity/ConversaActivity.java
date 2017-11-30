@@ -66,13 +66,18 @@ public class ConversaActivity extends AppCompatActivity {
 
         Preferencias preferencias = new Preferencias(ConversaActivity.this);
         idUsuarioRemetent = preferencias.getIdentificador();
-        nomeUsuarioRemetente = preferencias.getNome();
+        nomeUsuarioRemetente = new Preferencias(ConversaActivity.this).getNome();
+
 
         Bundle extra = getIntent().getExtras();
 
         if (extra != null){
             nomeUsuarioDestinatario = extra.getString("nome");
             emailDestinatario = extra.getString("email");
+
+            Toast.makeText(getApplicationContext(), "Remetente " + nomeUsuarioRemetente, Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Destinatario " + nomeUsuarioDestinatario, Toast.LENGTH_LONG).show();
+
             idUsuarioDestinatario = Base64Custom.codificarBase64(emailDestinatario);
         }
 
@@ -144,27 +149,27 @@ public class ConversaActivity extends AppCompatActivity {
                         }
                     }
 
-                    editMensagem.setText("");
+
                 }
 
                 //Salvar conversa
 
-                Conversa conversa = new Conversa();
-                conversa.setIdUsuario(idUsuarioDestinatario);
-                conversa.setNome(nomeUsuarioDestinatario);
-                conversa.setMensagem(textoMensagem);
+                Conversa conversaRemetente = new Conversa();
+                conversaRemetente.setIdUsuario(idUsuarioDestinatario);
+                conversaRemetente.setNome(nomeUsuarioDestinatario);
+                conversaRemetente.setMensagem(textoMensagem);
 
-                Boolean retornoConversaRemetente = salvarConversa(idUsuarioRemetent, idUsuarioDestinatario, conversa);
+                Boolean retornoConversaRemetente = salvarConversa(idUsuarioRemetent, idUsuarioDestinatario, conversaRemetente);
+
                 if(!retornoConversaRemetente){
                     Toast.makeText(ConversaActivity.this, "Problema ao salvar sua conversa", Toast.LENGTH_LONG).show();
-                } else {
-                    conversa = new Conversa();
-                    conversa.setIdUsuario(idUsuarioRemetent);
-                    conversa.setNome(nomeUsuarioRemetente);
-                    conversa.setMensagem(textoMensagem);
-
-                    Boolean retornoConversaDestinatario = salvarConversa(idUsuarioDestinatario, idUsuarioRemetent, conversa);
-
+                }  else {
+                    Conversa conversaDestinatario = new Conversa();
+                    conversaDestinatario.setIdUsuario(idUsuarioRemetent);
+                    conversaDestinatario.setNome(nomeUsuarioRemetente);
+                    conversaDestinatario.setMensagem(textoMensagem);
+                    salvarConversa(idUsuarioDestinatario, idUsuarioRemetent, conversaDestinatario);
+                    editMensagem.setText("");
                 }
             }
         });

@@ -84,48 +84,42 @@ public class LoginActivity extends AppCompatActivity {
         autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
         if (usuario.getEmail().isEmpty() || usuario.getSenha().isEmpty()){
             Toast.makeText(LoginActivity.this, "Digite seu email e senha", Toast.LENGTH_LONG).show();
-        } else {
-            autenticacao.signInWithEmailAndPassword(usuario.getEmail(), usuario.getSenha()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
-
-                        Preferencias preferencias = new Preferencias(LoginActivity.this);
-                        identificadorUsuarioLogado = Base64Custom.codificarBase64(usuario.getEmail());
-
-
-
-                        firebase = ConfiguracaoFirebase.getFirebase().child("usuarios").child(identificadorUsuarioLogado);
-
-                        preferencias.salvarUsuarioPreferencias(identificadorUsuarioLogado, usuario.getNome());
-
-//                        valueEventListenerUsuario = new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                                Usuario usuarioRecuperado = dataSnapshot.getValue(Usuario.class);
-//
-//                                Preferencias preferencias = new Preferencias(LoginActivity.this);
-//
-//                                preferencias.salvarUsuarioPreferencias(identificadorUsuarioLogado, usuarioRecuperado.getNome());
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(DatabaseError databaseError) {
-//
-//                            }
-//                        };
-
-                        abrirTelaPrincipal();
-                        Toast.makeText(LoginActivity.this, "Login efetuado", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(LoginActivity.this, "Falha no login", Toast.LENGTH_LONG).show();
-                    }
-
-
-                }
-            });
         }
+
+        autenticacao.signInWithEmailAndPassword(usuario.getEmail(), usuario.getSenha()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+
+                    identificadorUsuarioLogado = Base64Custom.codificarBase64(usuario.getEmail());
+
+                    firebase = ConfiguracaoFirebase.getFirebase().child("usuarios").child(identificadorUsuarioLogado);
+
+                   firebase.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Usuario usuarioRecuperado = dataSnapshot.getValue(Usuario.class);
+                            Toast.makeText(LoginActivity.this, usuarioRecuperado.getNome(), Toast.LENGTH_LONG).show();
+                            Preferencias preferencias = new Preferencias(LoginActivity.this);
+                            preferencias.salvarUsuarioPreferencias(identificadorUsuarioLogado, usuarioRecuperado.getNome());
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+                    abrirTelaPrincipal();
+                    Toast.makeText(LoginActivity.this, "Login efetuado", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Falha no login", Toast.LENGTH_LONG).show();
+                }
+
+
+            }
+        });
+
 
     }
 
@@ -133,6 +127,7 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
+
     }
 
     public void abrirCadastroUsuario(){

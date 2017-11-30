@@ -12,8 +12,8 @@ public class Preferencias {
     private String NOME_ARQUIVO = "whatsapp.preferencias";
     private int MODE = 0;
     private SharedPreferences.Editor editor;
-    private String CHAVE_IDENTIFICADOR = "identificadorUsuarioLogado";
-    private String CHAVE_NOME = "nomeUsuarioLogado";
+    private final String CHAVE_IDENTIFICADOR = "identificadorUsuarioLogado";
+    private final String CHAVE_NOME = "nomeUsuario";
 //    private String CHAVE_TELEFONE = "telefone";
 //    private String CHAVE_TOKEN = "token";
 
